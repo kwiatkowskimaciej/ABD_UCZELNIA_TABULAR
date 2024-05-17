@@ -1,0 +1,1091 @@
+{
+  "name": "SemanticModel",
+  "compatibilityLevel": 1200,
+  "model": {
+    "culture": "en-US",
+    "dataSources": [
+      {
+        "name": "ABD_GR02_DW",
+        "connectionString": "Provider=SQLNCLI11;Data Source=194.29.170.4;Initial Catalog=ABD_GR02_DW;User ID=ABDGR02;Persist Security Info=true",
+        "impersonationMode": "impersonateServiceAccount",
+        "annotations": [
+          {
+            "name": "ConnectionEditUISource",
+            "value": "SqlServer"
+          }
+        ]
+      }
+    ],
+    "tables": [
+      {
+        "name": "DimCzas",
+        "dataCategory": "Time",
+        "columns": [
+          {
+            "name": "Id_czasu",
+            "dataType": "int64",
+            "sourceColumn": "Id_czasu",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Data",
+            "dataType": "dateTime",
+            "isKey": true,
+            "sourceColumn": "Data",
+            "formatString": "General Date",
+            "sourceProviderType": "DBDate"
+          },
+          {
+            "name": "DzienMiesiaca",
+            "dataType": "int64",
+            "sourceColumn": "DzienMiesiaca",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Miesiac",
+            "dataType": "int64",
+            "sourceColumn": "Miesiac",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Kwartal",
+            "dataType": "int64",
+            "sourceColumn": "Kwartal",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Rok",
+            "dataType": "int64",
+            "sourceColumn": "Rok",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "DzienTygodnia",
+            "dataType": "int64",
+            "sourceColumn": "DzienTygodnia",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "NazwaMiesiacaPolska",
+            "dataType": "string",
+            "sourceColumn": "NazwaMiesiacaPolska",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "NazwaMiesiacaAngielska",
+            "dataType": "string",
+            "sourceColumn": "NazwaMiesiacaAngielska",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "NazwaDniaTygodniaPolska",
+            "dataType": "string",
+            "sourceColumn": "NazwaDniaTygodniaPolska",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "NazwaDniaTygodniaAngielska",
+            "dataType": "string",
+            "sourceColumn": "NazwaDniaTygodniaAngielska",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Data_utworzenia",
+            "dataType": "dateTime",
+            "sourceColumn": "Data_utworzenia",
+            "formatString": "General Date",
+            "sourceProviderType": "DBTimeStamp"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "DimCzas",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " SELECT [dbo].[DimCzas].* FROM [dbo].[DimCzas] ",
+              "dataSource": "ABD_GR02_DW"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "DaysCurrentQuarterToDate",
+            "expression": " COUNTROWS(DATESQTD('DimCzas'[Data]))"
+          },
+          {
+            "name": "DaysInCurrentQuarter",
+            "expression": " COUNTROWS(DATESBETWEEN('DimCzas'[Data], STARTOFQUARTER(LASTDATE('DimCzas'[Data])), ENDOFQUARTER('DimCzas'[Data])))"
+          }
+        ],
+        "hierarchies": [
+          {
+            "name": "CalendarH",
+            "levels": [
+              {
+                "name": "Rok",
+                "ordinal": 0,
+                "column": "Rok"
+              },
+              {
+                "name": "Kwartal",
+                "ordinal": 1,
+                "column": "Kwartal"
+              },
+              {
+                "name": "Miesiac",
+                "ordinal": 2,
+                "column": "Miesiac"
+              },
+              {
+                "name": "DzienMiesiaca",
+                "ordinal": 3,
+                "column": "DzienMiesiaca"
+              }
+            ]
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dbo].[DimCzas].* FROM [dbo].[DimCzas] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "DimCzas"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dbo"
+          }
+        ]
+      },
+      {
+        "name": "DimKierunek",
+        "columns": [
+          {
+            "name": "NrKierunku",
+            "dataType": "int64",
+            "sourceColumn": "NrKierunku",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "NrKierunkuT",
+            "dataType": "int64",
+            "sourceColumn": "NrKierunkuT",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Nazwa",
+            "dataType": "string",
+            "sourceColumn": "Nazwa",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Opis",
+            "dataType": "string",
+            "sourceColumn": "Opis",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Nazwa_wydzialu",
+            "dataType": "string",
+            "sourceColumn": "Nazwa_wydzialu",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Nazwa_uczelni",
+            "dataType": "string",
+            "sourceColumn": "Nazwa_uczelni",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Data_utworzenia",
+            "dataType": "dateTime",
+            "sourceColumn": "Data_utworzenia",
+            "formatString": "General Date",
+            "sourceProviderType": "DBTimeStamp"
+          },
+          {
+            "name": "Data_modyfikacji",
+            "dataType": "dateTime",
+            "sourceColumn": "Data_modyfikacji",
+            "formatString": "General Date",
+            "sourceProviderType": "DBTimeStamp"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "DimKierunek",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " SELECT [dbo].[DimKierunek].* FROM [dbo].[DimKierunek] ",
+              "dataSource": "ABD_GR02_DW"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dbo].[DimKierunek].* FROM [dbo].[DimKierunek] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "DimKierunek"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dbo"
+          }
+        ]
+      },
+      {
+        "name": "DimOplata",
+        "columns": [
+          {
+            "name": "NrOplaty",
+            "dataType": "int64",
+            "sourceColumn": "NrOplaty",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "NrOplatyT",
+            "dataType": "int64",
+            "sourceColumn": "NrOplatyT",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Nazwa",
+            "dataType": "string",
+            "sourceColumn": "Nazwa",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Opis",
+            "dataType": "string",
+            "sourceColumn": "Opis",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Kwota",
+            "dataType": "double",
+            "sourceColumn": "Kwota",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "DataWniesieniaOplaty",
+            "dataType": "dateTime",
+            "sourceColumn": "DataWniesieniaOplaty",
+            "formatString": "General Date",
+            "sourceProviderType": "DBTimeStamp"
+          },
+          {
+            "name": "NrRachunkuOdbiorcy",
+            "dataType": "string",
+            "sourceColumn": "NrRachunkuOdbiorcy",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Data_utworzenia",
+            "dataType": "dateTime",
+            "sourceColumn": "Data_utworzenia",
+            "formatString": "General Date",
+            "sourceProviderType": "DBTimeStamp"
+          },
+          {
+            "name": "Data_modyfikacji",
+            "dataType": "dateTime",
+            "sourceColumn": "Data_modyfikacji",
+            "formatString": "General Date",
+            "sourceProviderType": "DBTimeStamp"
+          },
+          {
+            "type": "calculated",
+            "name": "Calculated Column 1",
+            "dataType": "int64",
+            "isDataTypeInferred": true,
+            "expression": "DATEDIFF(DimOplata[Data_utworzenia], DimOplata[DataWniesieniaOplaty], DAY)"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "DimOplata",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " SELECT [dbo].[DimOplata].* FROM [dbo].[DimOplata] ",
+              "dataSource": "ABD_GR02_DW"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "SumaOpłatOstatniKwartał",
+            "expression": " CALCULATE(SUM(DimOplata[Kwota]), DATESINPERIOD(DimOplata[DataWniesieniaOplaty], TODAY(), -3, MONTH))"
+          },
+          {
+            "name": "SumaOpłatOstatniePółrocze",
+            "expression": " CALCULATE(SUM(DimOplata[Kwota]), DATESINPERIOD(DimOplata[DataWniesieniaOplaty], TODAY(), -6, MONTH))"
+          },
+          {
+            "name": "SumaOpłatOstatniRok",
+            "expression": " CALCULATE(SUM(DimOplata[Kwota]), DATESINPERIOD(DimOplata[DataWniesieniaOplaty], TODAY(), -12, MONTH))"
+          },
+          {
+            "name": "SumaOpłatPoprzedniRok",
+            "expression": " CALCULATE(SUM(DimOplata[Kwota]), DATESBETWEEN(DimOplata[DataWniesieniaOplaty], DATE(YEAR(TODAY()) - 1, 1, 1),  DATE(YEAR(TODAY()) - 1, 12, 31)))"
+          },
+          {
+            "name": "SumaOpłatDwaLataTemu",
+            "expression": " CALCULATE(SUM(DimOplata[Kwota]), DATESBETWEEN(DimOplata[DataWniesieniaOplaty], DATE(YEAR(TODAY()) - 2, 1, 1),  DATE(YEAR(TODAY()) - 2, 12, 31)))"
+          },
+          {
+            "name": "SumaOpłatTrzyLataTemu",
+            "expression": " CALCULATE(SUM(DimOplata[Kwota]), DATESBETWEEN(DimOplata[DataWniesieniaOplaty], DATE(YEAR(TODAY()) - 3, 1, 1),  DATE(YEAR(TODAY()) - 3, 12, 31)))"
+          },
+          {
+            "name": "SumaOpłatCzteryLataTemu",
+            "expression": " CALCULATE(SUM(DimOplata[Kwota]), DATESBETWEEN(DimOplata[DataWniesieniaOplaty], DATE(YEAR(TODAY()) - 4, 1, 1),  DATE(YEAR(TODAY()) - 4, 12, 31)))"
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dbo].[DimOplata].* FROM [dbo].[DimOplata] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "DimOplata"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dbo"
+          }
+        ]
+      },
+      {
+        "name": "DimProgram",
+        "columns": [
+          {
+            "name": "NrProgramu",
+            "dataType": "int64",
+            "sourceColumn": "NrProgramu",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "NrProgramuT",
+            "dataType": "int64",
+            "sourceColumn": "NrProgramuT",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Nazwa",
+            "dataType": "string",
+            "sourceColumn": "Nazwa",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Kraj",
+            "dataType": "string",
+            "sourceColumn": "Kraj",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Miasto",
+            "dataType": "string",
+            "sourceColumn": "Miasto",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Dlugosc",
+            "dataType": "int64",
+            "sourceColumn": "Dlugosc",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Opis",
+            "dataType": "string",
+            "sourceColumn": "Opis",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Data_utworzenia",
+            "dataType": "dateTime",
+            "sourceColumn": "Data_utworzenia",
+            "formatString": "General Date",
+            "sourceProviderType": "DBTimeStamp"
+          },
+          {
+            "name": "Data_modyfikacji",
+            "dataType": "dateTime",
+            "sourceColumn": "Data_modyfikacji",
+            "formatString": "General Date",
+            "sourceProviderType": "DBTimeStamp"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "DimProgram",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " SELECT [dbo].[DimProgram].* FROM [dbo].[DimProgram] ",
+              "dataSource": "ABD_GR02_DW"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dbo].[DimProgram].* FROM [dbo].[DimProgram] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "DimProgram"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dbo"
+          }
+        ]
+      },
+      {
+        "name": "DimPrzedmiot",
+        "columns": [
+          {
+            "name": "NrPrzedmiotu",
+            "dataType": "int64",
+            "sourceColumn": "NrPrzedmiotu",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "NrPrzedmiotuT",
+            "dataType": "int64",
+            "sourceColumn": "NrPrzedmiotuT",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Nazwa",
+            "dataType": "string",
+            "sourceColumn": "Nazwa",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Opis",
+            "dataType": "string",
+            "sourceColumn": "Opis",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Czy_wyklad",
+            "dataType": "string",
+            "sourceColumn": "Czy_wyklad",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Godzina_wykladu",
+            "dataType": "dateTime",
+            "sourceColumn": "Godzina_wykladu",
+            "formatString": "General Date",
+            "sourceProviderType": "145"
+          },
+          {
+            "name": "Czy_cwiczenia",
+            "dataType": "string",
+            "sourceColumn": "Czy_cwiczenia",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Godzina_cwiczenia",
+            "dataType": "dateTime",
+            "sourceColumn": "Godzina_cwiczenia",
+            "formatString": "General Date",
+            "sourceProviderType": "145"
+          },
+          {
+            "name": "Czy_laboratorium",
+            "dataType": "string",
+            "sourceColumn": "Czy_laboratorium",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Godzina_laboratorium",
+            "dataType": "dateTime",
+            "sourceColumn": "Godzina_laboratorium",
+            "formatString": "General Date",
+            "sourceProviderType": "145"
+          },
+          {
+            "name": "Liczba_miejsc",
+            "dataType": "int64",
+            "sourceColumn": "Liczba_miejsc",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Nazwa_wydzialu",
+            "dataType": "string",
+            "sourceColumn": "Nazwa_wydzialu",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Nazwa_uczelni",
+            "dataType": "string",
+            "sourceColumn": "Nazwa_uczelni",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Data_utworzenia",
+            "dataType": "dateTime",
+            "sourceColumn": "Data_utworzenia",
+            "formatString": "General Date",
+            "sourceProviderType": "DBTimeStamp"
+          },
+          {
+            "name": "Data_modyfikacji",
+            "dataType": "dateTime",
+            "sourceColumn": "Data_modyfikacji",
+            "formatString": "General Date",
+            "sourceProviderType": "DBTimeStamp"
+          },
+          {
+            "name": "ECTS",
+            "dataType": "int64",
+            "sourceColumn": "ECTS",
+            "sourceProviderType": "Integer"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "DimPrzedmiot",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " SELECT [dbo].[DimPrzedmiot].* FROM [dbo].[DimPrzedmiot] ",
+              "dataSource": "ABD_GR02_DW"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "LiczbaPrzedmiotowZa4ECTS",
+            "expression": " CALCULATE(COUNTROWS(DimPrzedmiot), DimPrzedmiot[ECTS] = 4)"
+          },
+          {
+            "name": "LiczbaPrzedmiotowZa5ECTS",
+            "expression": " CALCULATE(COUNTROWS(DimPrzedmiot), DimPrzedmiot[ECTS] = 5)"
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dbo].[DimPrzedmiot].* FROM [dbo].[DimPrzedmiot] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "DimPrzedmiot"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dbo"
+          }
+        ]
+      },
+      {
+        "name": "DimStudent",
+        "columns": [
+          {
+            "name": "NrStudenta",
+            "dataType": "int64",
+            "sourceColumn": "NrStudenta",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "NrStudentaT",
+            "dataType": "int64",
+            "sourceColumn": "NrStudentaT",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Imie",
+            "dataType": "string",
+            "sourceColumn": "Imie",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Drugie_imie",
+            "dataType": "string",
+            "sourceColumn": "Drugie_imie",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Nazwisko",
+            "dataType": "string",
+            "sourceColumn": "Nazwisko",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Data_urodzenia",
+            "dataType": "dateTime",
+            "sourceColumn": "Data_urodzenia",
+            "formatString": "General Date",
+            "sourceProviderType": "DBTimeStamp"
+          },
+          {
+            "name": "PESEL",
+            "dataType": "string",
+            "sourceColumn": "PESEL",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Nr_telefonu",
+            "dataType": "string",
+            "sourceColumn": "Nr_telefonu",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Email",
+            "dataType": "string",
+            "sourceColumn": "Email",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Nr_konta",
+            "dataType": "string",
+            "sourceColumn": "Nr_konta",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Kraj",
+            "dataType": "string",
+            "sourceColumn": "Kraj",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Miasto",
+            "dataType": "string",
+            "sourceColumn": "Miasto",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Ulica",
+            "dataType": "string",
+            "sourceColumn": "Ulica",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Nr_budynku",
+            "dataType": "string",
+            "sourceColumn": "Nr_budynku",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Kod_pocztowy",
+            "dataType": "string",
+            "sourceColumn": "Kod_pocztowy",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Stopien_studiow",
+            "dataType": "string",
+            "sourceColumn": "Stopien_studiow",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Kierunek_studiow",
+            "dataType": "string",
+            "sourceColumn": "Kierunek_studiow",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Srednia_ocen",
+            "dataType": "double",
+            "sourceColumn": "Srednia_ocen",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "Data_utworzenia",
+            "dataType": "dateTime",
+            "sourceColumn": "Data_utworzenia",
+            "formatString": "General Date",
+            "sourceProviderType": "DBTimeStamp"
+          },
+          {
+            "name": "Data_modyfikacji",
+            "dataType": "dateTime",
+            "sourceColumn": "Data_modyfikacji",
+            "formatString": "General Date",
+            "sourceProviderType": "DBTimeStamp"
+          },
+          {
+            "type": "calculated",
+            "name": "DegreeAsInt",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "expression": "VALUE(DimStudent[Stopien_studiow])"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "DimStudent",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " SELECT [dbo].[DimStudent].* FROM [dbo].[DimStudent] ",
+              "dataSource": "ABD_GR02_DW"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "StudentsOnFirstDegree",
+            "expression": " CALCULATE(COUNTROWS(DimStudent), DimStudent[DegreeAsInt] = 1)"
+          },
+          {
+            "name": "StudentsOnThrdDegree",
+            "expression": " CALCULATE(COUNTROWS(DimStudent), DimStudent[DegreeAsInt] = 3)"
+          },
+          {
+            "name": "StudentsOnSecondDegree",
+            "expression": " CALCULATE(COUNTROWS(DimStudent), DimStudent[DegreeAsInt] = 2)"
+          },
+          {
+            "name": "LiczbaStudentowInzynieriBiomedycznej",
+            "expression": " CALCULATE(COUNTROWS(DimStudent), DimStudent[Kierunek_studiow] = \"Inżynieria Biomedyczna\")"
+          },
+          {
+            "name": "LiczbaStudentowInformatykij",
+            "expression": " CALCULATE(COUNTROWS(DimStudent), DimStudent[Kierunek_studiow] = \"Informatyka\")"
+          },
+          {
+            "name": "LiczbaStudentowRobotyki",
+            "expression": " CALCULATE(COUNTROWS(DimStudent), DimStudent[Kierunek_studiow] = \"Robotyka\")"
+          },
+          {
+            "name": "LiczbaStudentowElektroniki",
+            "expression": " CALCULATE(COUNTROWS(DimStudent), DimStudent[Kierunek_studiow] = \"Elektronika\")"
+          },
+          {
+            "name": "LiczbaStudentowCyberbezpieczeństwa",
+            "expression": " CALCULATE(COUNTROWS(DimStudent), DimStudent[Kierunek_studiow] = \"Cyberbezpieczenstwo\")"
+          },
+          {
+            "name": "LiczbaStudentowTelekomunikacji",
+            "expression": " CALCULATE(COUNTROWS(DimStudent), DimStudent[Kierunek_studiow] = \"Telekomunikacja\")"
+          },
+          {
+            "name": "StudentZWarszawy",
+            "expression": " CALCULATE(COUNTROWS(DimStudent), DimStudent[Miasto] = \"Warszawa\")"
+          },
+          {
+            "name": "StudentSpozaWarszawy",
+            "expression": " COUNTA(DimStudent[NrStudenta]) - [StudentZWarszawy]"
+          },
+          {
+            "name": "LiczbaZakwalifikowanychDoStypendium",
+            "expression": " CALCULATE(COUNTROWS(DimStudent), DimStudent[Srednia_ocen] > 4)"
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dbo].[DimStudent].* FROM [dbo].[DimStudent] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "DimStudent"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dbo"
+          }
+        ]
+      },
+      {
+        "name": "FactProgramyRealizacje",
+        "columns": [
+          {
+            "name": "DimProgram",
+            "dataType": "int64",
+            "sourceColumn": "DimProgram",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Liczba_uczestnikow",
+            "dataType": "int64",
+            "sourceColumn": "Liczba_uczestnikow",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Data_utworzenia",
+            "dataType": "dateTime",
+            "sourceColumn": "Data_utworzenia",
+            "formatString": "General Date",
+            "sourceProviderType": "DBTimeStamp"
+          },
+          {
+            "name": "DimStudent",
+            "dataType": "int64",
+            "sourceColumn": "DimStudent",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "DimCzas",
+            "dataType": "int64",
+            "sourceColumn": "DimCzas",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Data_modyfikacji",
+            "dataType": "dateTime",
+            "sourceColumn": "Data_modyfikacji",
+            "formatString": "General Date",
+            "sourceProviderType": "DBTimeStamp"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "FactProgramyRealizacje",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " SELECT [dbo].[FactProgramyRealizacje].* FROM [dbo].[FactProgramyRealizacje] ",
+              "dataSource": "ABD_GR02_DW"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "DistinctCountProgramRealizationNumber",
+            "expression": " DISTINCTCOUNT([DimProgram])"
+          },
+          {
+            "name": "DistinctCountStudentsNumber",
+            "expression": " DISTINCTCOUNT([DimStudent])"
+          },
+          {
+            "name": "LiczbaUczesntikowProgramu1",
+            "expression": " CALCULATE(COUNTROWS(FactProgramyRealizacje), FactProgramyRealizacje[DimProgram] = 1)"
+          },
+          {
+            "name": "LiczbaUczesntikowProgramu3",
+            "expression": " CALCULATE(COUNTROWS(FactProgramyRealizacje), FactProgramyRealizacje[DimProgram] = 3)"
+          },
+          {
+            "name": "LiczbaUczesntikowProgramu4",
+            "expression": " CALCULATE(COUNTROWS(FactProgramyRealizacje), FactProgramyRealizacje[DimProgram] = 4)"
+          },
+          {
+            "name": "LiczbaUczesntikowProgramu5",
+            "expression": " CALCULATE(COUNTROWS(FactProgramyRealizacje), FactProgramyRealizacje[DimProgram] = 5)"
+          },
+          {
+            "name": "LiczbaUczesntikowProgramu9",
+            "expression": " CALCULATE(COUNTROWS(FactProgramyRealizacje), FactProgramyRealizacje[DimProgram] = 9)"
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dbo].[FactProgramyRealizacje].* FROM [dbo].[FactProgramyRealizacje] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "FactProgramyRealizacje"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dbo"
+          }
+        ]
+      },
+      {
+        "name": "FactRealizacje",
+        "columns": [
+          {
+            "name": "Sumaryczna_kwota_oplat",
+            "dataType": "double",
+            "sourceColumn": "Sumaryczna_kwota_oplat",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "Data_utworzenia",
+            "dataType": "dateTime",
+            "sourceColumn": "Data_utworzenia",
+            "formatString": "General Date",
+            "sourceProviderType": "DBDate"
+          },
+          {
+            "name": "DimKierunek",
+            "dataType": "int64",
+            "sourceColumn": "DimKierunek",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "DimOplata",
+            "dataType": "int64",
+            "sourceColumn": "DimOplata",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "DimPrzedmiot",
+            "dataType": "int64",
+            "sourceColumn": "DimPrzedmiot",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "DimStudent",
+            "dataType": "int64",
+            "sourceColumn": "DimStudent",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "DimCzas",
+            "dataType": "int64",
+            "sourceColumn": "DimCzas",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Data_modyfikacji",
+            "dataType": "dateTime",
+            "sourceColumn": "Data_modyfikacji",
+            "formatString": "General Date",
+            "sourceProviderType": "DBTimeStamp"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "FactRealizacje",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " SELECT [dbo].[FactRealizacje].* FROM [dbo].[FactRealizacje] ",
+              "dataSource": "ABD_GR02_DW"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "SumarycznaKwota",
+            "expression": " SUM(FactRealizacje[Sumaryczna_kwota_oplat])"
+          },
+          {
+            "name": "SumarycznaKwotaOplatNaKierunku1",
+            "expression": " CALCULATE(SUM(FactRealizacje[Sumaryczna_kwota_oplat]), FactRealizacje[DimKierunek] = 1)"
+          },
+          {
+            "name": "SumarycznaKwotaOplatNaKierunku3",
+            "expression": " CALCULATE(SUM(FactRealizacje[Sumaryczna_kwota_oplat]), FactRealizacje[DimKierunek] = 3)"
+          },
+          {
+            "name": "SumarycznaKwotaOplatNaKierunku5",
+            "expression": " CALCULATE(SUM(FactRealizacje[Sumaryczna_kwota_oplat]), FactRealizacje[DimKierunek] = 5)"
+          },
+          {
+            "name": "SumarycznaKwotaOplatNaKierunku6",
+            "expression": " CALCULATE(SUM(FactRealizacje[Sumaryczna_kwota_oplat]), FactRealizacje[DimKierunek] = 6)"
+          },
+          {
+            "name": "SumarycznaKwotaOplatNaPrzedmiocie1",
+            "expression": "  CALCULATE(SUM(FactRealizacje[Sumaryczna_kwota_oplat]), FactRealizacje[DimPrzedmiot] = 1)"
+          },
+          {
+            "name": "SumarycznaKwotaOplatNaPrzedmiocie2",
+            "expression": "  CALCULATE(SUM(FactRealizacje[Sumaryczna_kwota_oplat]), FactRealizacje[DimPrzedmiot] = 2)"
+          },
+          {
+            "name": "SumarycznaKwotaOplatNaPrzedmiocie3",
+            "expression": "  CALCULATE(SUM(FactRealizacje[Sumaryczna_kwota_oplat]), FactRealizacje[DimPrzedmiot] = 3)"
+          },
+          {
+            "name": "SumarycznaKwotaOplatNaPrzedmiocie4",
+            "expression": "  CALCULATE(SUM(FactRealizacje[Sumaryczna_kwota_oplat]), FactRealizacje[DimPrzedmiot] = 4)"
+          },
+          {
+            "name": "SumarycznaKwotaOplatNaPrzedmiocie6",
+            "expression": "  CALCULATE(SUM(FactRealizacje[Sumaryczna_kwota_oplat]), FactRealizacje[DimPrzedmiot] = 6)"
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dbo].[FactRealizacje].* FROM [dbo].[FactRealizacje] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "FactRealizacje"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dbo"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "013de2a8-9ca9-46a4-bf2e-698a3399cd8a",
+        "fromTable": "FactProgramyRealizacje",
+        "fromColumn": "DimStudent",
+        "toTable": "DimStudent",
+        "toColumn": "NrStudenta"
+      },
+      {
+        "name": "bab1d17c-d98f-4c03-8b28-e29d29d319aa",
+        "fromTable": "FactRealizacje",
+        "fromColumn": "DimCzas",
+        "toTable": "DimCzas",
+        "toColumn": "Id_czasu"
+      },
+      {
+        "name": "271d5b08-48a3-48b0-954e-759ae05632f6",
+        "fromTable": "FactProgramyRealizacje",
+        "fromColumn": "DimCzas",
+        "toTable": "DimCzas",
+        "toColumn": "Id_czasu"
+      },
+      {
+        "name": "dcf5df8b-3ac6-4260-8c65-d300ea830fd0",
+        "fromTable": "FactProgramyRealizacje",
+        "fromColumn": "DimProgram",
+        "toTable": "DimProgram",
+        "toColumn": "NrProgramu"
+      },
+      {
+        "name": "9637c5dd-1028-432d-9445-90ad4284e6fb",
+        "fromTable": "FactRealizacje",
+        "fromColumn": "DimKierunek",
+        "toTable": "DimKierunek",
+        "toColumn": "NrKierunku"
+      },
+      {
+        "name": "d2fd81c0-1a5c-447a-86b8-cb04517507dc",
+        "fromTable": "FactRealizacje",
+        "fromColumn": "DimOplata",
+        "toTable": "DimOplata",
+        "toColumn": "NrOplaty"
+      },
+      {
+        "name": "b214ca78-fb42-4a51-a2fd-de38a9f69057",
+        "fromTable": "FactRealizacje",
+        "fromColumn": "DimPrzedmiot",
+        "toTable": "DimPrzedmiot",
+        "toColumn": "NrPrzedmiotu"
+      },
+      {
+        "name": "ec2b3e3b-c7ee-479d-acfa-2ea97d0e8bd7",
+        "fromTable": "FactRealizacje",
+        "fromColumn": "DimStudent",
+        "toTable": "DimStudent",
+        "toColumn": "NrStudenta"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "ClientCompatibilityLevel",
+        "value": "400"
+      }
+    ]
+  },
+  "id": "SemanticModel"
+}
